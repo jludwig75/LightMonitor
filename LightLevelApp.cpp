@@ -1,5 +1,7 @@
 #include "LightLevelApp.h"
 
+#include "tracing.h"
+
 
 LightLevelApp::LightLevelApp(int light_sensor_pin,
                              const char * light_level_log_file_name,
@@ -22,13 +24,19 @@ void LightLevelApp::on_setup()
 {
   Serial.begin(115200);
 
+  inf_printf("Starting Light Monitor...\n");
+
   // Connect to WiFi network
   connect_wifi(_wifi_ssid, _wifi_password);
 
+  inf_printf("Starting time manager...\n");
   _time_manager.on_setup();
 
   // Start the web server
+  inf_printf("Starting web server...\n");
   _light_server.on_setup();
+
+  inf_printf("Light Monitor Started\n");
 }
 
 void LightLevelApp::on_loop()

@@ -39,12 +39,15 @@ void LightLevelServer::handle_light_level_history()
 {
   String output = "time,light level\n";
   unsigned entries_retrieved;
-  while(_light_log.get_light_level_history(_light_level_buffer, LIGHT_LEVEL_HISTORY_ENTRIES, entries_retrieved) && entries_retrieved > 0)
+  unsigned start_entry = 0;
+  while(_light_log.get_light_level_history(_light_level_buffer, LIGHT_LEVEL_HISTORY_ENTRIES, start_entry, entries_retrieved) && entries_retrieved > 0)
   {
     for(unsigned i = 0; i < entries_retrieved; i++)
     {
       output += String("") + _light_level_buffer[i].time + "," + _light_level_buffer[i].light_level + "\n";
     }
+
+    start_entry += entries_retrieved;
   }
 
   send(200, "text/plain", output);
