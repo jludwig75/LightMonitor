@@ -39,7 +39,7 @@ void LightLevelServer::handle_root() {
 
 void LightLevelServer::handle_light_level() {
   inf_printf("Web server handling path \"/light_level\"\n");
-  String output = String("Light level = ");// +_light_level_sensor.get_current_light_level();
+  String output = String("Light level = ") +_light_level_sensor.get_current_light_level();
   send(200, "text/plain", output);
   inf_printf("Web server handled path \"/light_level\":\n%s", output.c_str());
 }
