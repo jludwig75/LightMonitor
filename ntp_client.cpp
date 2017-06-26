@@ -1,5 +1,6 @@
 #include "ntp_client.h"
 
+#include "tracing.h"
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
@@ -23,10 +24,9 @@ NtpClient::~NtpClient()
 void NtpClient::begin(uint16_t udp_listen_port)
 {
 	m_udp = new WiFiUDP;
-	Serial.println("Starting UDP");
+	inf_printf("Starting UDP\n");
 	m_udp->begin(udp_listen_port);
-	Serial.print("Local NTP UDP port: ");
-	Serial.println(m_udp->localPort());
+	inf_printf("Local NTP UDP port: %u\n", m_udp->localPort());
 }
 
 time_t getNtpTime(WiFiUDP & udp);
@@ -48,18 +48,16 @@ time_t getNtpTime(WiFiUDP & udp)
 	IPAddress ntpServerIP; // NTP server's ip address
 
 	while (udp.parsePacket() > 0); // discard any previously received packets
-	Serial.println("Transmit NTP Request");
+	inf_printf("Transmit NTP Request\n");
 	// get a random server from the pool
 	WiFi.hostByName(ntpServerName, ntpServerIP);
-	Serial.print(ntpServerName);
-	Serial.print(": ");
-	Serial.println(ntpServerIP);
+	inf_printf("%s: %s\n", ntpServerName, ntpServerIP.toString().c_str());
 	sendNTPpacket(udp, ntpServerIP);
 	uint32_t beginWait = millis();
 	while (millis() - beginWait < 1500) {
 		int size = udp.parsePacket();
 		if (size >= NTP_PACKET_SIZE) {
-			Serial.println("Receive NTP Response");
+			inf_printf("Received NTP Response\n");
 			udp.read(packetBuffer, NTP_PACKET_SIZE);  // read packet into the buffer
 			unsigned long secsSince1900;
 			// convert four bytes starting at location 40 to a long integer
@@ -70,7 +68,7 @@ time_t getNtpTime(WiFiUDP & udp)
 			return secsSince1900 - 2208988800UL;
 		}
 	}
-	Serial.println("No NTP Response :-(");
+	inf_printf("No NTP Response :-(\n");
 	return 0; // return 0 if unable to get the time
 }
 

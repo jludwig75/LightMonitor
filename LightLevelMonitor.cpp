@@ -4,6 +4,7 @@
 #include "LightLevelLog.h"
 #include "TimeManager.h"
 
+#include "tracing.h"
 #include <Arduino.h>
 
 
@@ -23,7 +24,11 @@ void LightLevelMonitor::on_loop()
   {
     _last_update_time_ms = current_time;
 
-    uint32_t new_time = _time_manager.get_time();
-    _light_log.log_light_level(new_time, _light_sensor.get_current_light_level());
+    inf_printf("Getting current time\n");
+    uint32_t current_time = _time_manager.get_time();
+    uint16_t light_level = _light_sensor.get_current_light_level();
+
+    inf_printf("Logging light level %u at %lu\n", light_level, current_time);
+    _light_log.log_light_level(current_time, light_level);
   }
 }

@@ -28,7 +28,7 @@ void LightLevelLog::log_light_level(uint32_t time, int16_t light_level)
   }
   else
   {
-    inf_printf("Successfully wrote entry to log file\n");
+    inf_printf("Successfully wrote entry to log file: %lu -> %u\n", time, light_level);
   }
 }
 
