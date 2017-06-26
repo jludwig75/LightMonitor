@@ -48,9 +48,6 @@
     <ClCompile Include="wifi_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LightLevelServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\ArduinoSimulation\ESP8266WebServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -58,6 +55,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\ArduinoSimulation\FS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ArduinoSimulation\libb64\cdecode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ArduinoSimulation\libb64\cencode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\LightMonitorSketch\LightLevelServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

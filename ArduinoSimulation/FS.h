@@ -4,25 +4,39 @@
 #include <stdint.h>
 
 
+enum SeekMode {
+    SeekSet = 0,
+    SeekCur = 1,
+    SeekEnd = 2
+};
+
+
 class File
 {
 public:
-    File(FILE * fp);
+    File(FILE * fp, const String & name);
+    const char *name() const;
     operator bool() const;
     size_t size() const;
     size_t write(const uint8_t *buffer, size_t bytes_to_write);
-    size_t readBytes(uint8_t *buffer, size_t bytes_to_read);
+    size_t readBytes(char *buffer, size_t bytes_to_read);
+    bool seek(uint32_t pos, SeekMode mode);
+    bool seek(uint32_t pos) {
+        return seek(pos, SeekSet);
+    }
     void close();
 private:
     FILE * _fp;
+    String _name;
 };
 
 
-class SPIFFS_fs
+class FS
 {
 public:
     File open(const String & file_name, const char * mode);
+    bool exists(const String & path) const;
 };
 
 
-extern SPIFFS_fs SPIFFS;
+extern FS SPIFFS;

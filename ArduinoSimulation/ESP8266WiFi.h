@@ -1,7 +1,3 @@
 #pragma once
 
-
-class IPAddress
-{
-
-};
+#include "IPAddress.h"

@@ -1,5 +1,6 @@
 #include "Arduino.h"
 
+#include <WString.h>
 #include <stdio.h>
 #include <Windows.h>
 
@@ -21,6 +22,17 @@ void HardwareSerial::print(const char * str)
 {
     printf(str);
 }
+
+void HardwareSerial::println(const char * str)
+{
+    printf("%s\n", str);
+}
+
+void HardwareSerial::println(size_t val)
+{
+    println(String(val).c_str());
+}
+
 
 
 int analogRead(int pin)

@@ -54,6 +54,6 @@ uint32_t TimeManager::get_time() const
     const_cast<TimeManager *>(this)->on_loop();
   }
   
-  return now();
+  return (uint32_t)now();
 }
 

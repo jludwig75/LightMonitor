@@ -39,7 +39,7 @@ void LightLevelServer::handle_root() {
 
 void LightLevelServer::handle_light_level() {
   inf_printf("Web server handling path \"/light_level\"\n");
-  String output = String("Light level = ") +_light_level_sensor.get_current_light_level();
+  String output = String("Light level = ") + String(_light_level_sensor.get_current_light_level());
   send(200, "text/plain", output);
   inf_printf("Web server handled path \"/light_level\":\n%s", output.c_str());
 }
@@ -55,7 +55,7 @@ void LightLevelServer::handle_light_level_history()
   {
     for(unsigned i = 0; i < entries_retrieved; i++)
     {
-      output += String("") + _light_level_buffer[i].time + "," + _light_level_buffer[i].light_level + "\n";
+      output += String("") + String(_light_level_buffer[i].time) + "," + String(_light_level_buffer[i].light_level) + "\n";
     }
 
     start_entry += entries_retrieved;

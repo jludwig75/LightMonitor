@@ -3,8 +3,8 @@
 
 #define LIGHT_SENSOR_PIN                4
 #define WEB_SERVER_PORT                 80
-#define LIGHT_LEVEL_UPDATE_INTERVAL_MS  (15 * 1000)   // 5 Minutes
-#define TIME_MANAGER_UPDATE_INTERVAL_MS (30 * 1000)  // 1 hour
+#define LIGHT_LEVEL_UPDATE_INTERVAL_MS  (5 * 60 * 1000)   // 5 Minutes
+#define TIME_MANAGER_UPDATE_INTERVAL_MS (60 * 60 * 1000)  // 1 hour
 #define WIFI_SSID                       "My SSID"
 #define WIFI_PASSWORD                   "XXXXXXXXXXXXX"
 #define LIGHT_LEVEL_LOG_FILE_NAME       "/light_levels.log"
