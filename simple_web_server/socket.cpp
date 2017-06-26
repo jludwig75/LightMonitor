@@ -177,7 +177,7 @@ SocketServer::SocketServer(int port, int connections, TypeSocket type) {
     closesocket(s_);
     throw "INVALID_SOCKET";
   }
-  
+
   listen(s_, connections);                               
 }
 

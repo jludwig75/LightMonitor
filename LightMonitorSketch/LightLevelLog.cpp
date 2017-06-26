@@ -80,8 +80,15 @@ bool LightLevelLog::get_light_level_history(LightLevel *light_levels, unsigned o
   log_file.close();
   if (bytes_read != bytes_to_read)
   {
+      if (bytes_read < sizeof(LightLevelLog::LightLevel))
+      {
+          err_printf("Failed to read from log file. Read %u of %u bytes.\n", bytes_read, bytes_to_read);
+          return false;
+      }
+
     err_printf("Failed to read from log file. Read %u of %u bytes.\n", bytes_read, bytes_to_read);
-    return false;
+    entries_retrieved = bytes_read / sizeof(LightLevelLog::LightLevel);
+    return true;
   }
   
   entries_retrieved = entries_to_read;

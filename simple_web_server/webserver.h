@@ -76,6 +76,6 @@ class webserver {
 
   private:
     SocketServer _in;
-    static unsigned __stdcall Request(void*);
+    static unsigned __stdcall Request(Socket *);
     static request_func request_func_;
 };
