@@ -68,7 +68,7 @@ bool LightLevelLog::get_light_level_history(LightLevel *light_levels, unsigned o
   }
 
   unsigned bytes_to_read = entries_to_read * sizeof(LightLevelLog::LightLevel);
-  unsigned bytes_read = log_file.readBytes((char *)light_levels, bytes_to_read);
+  unsigned bytes_read = log_file.readBytes((uint8_t *)light_levels, bytes_to_read);
   log_file.close();
   if (bytes_read != bytes_to_read)
   {
