@@ -22,7 +22,7 @@ LightLevelApp::LightLevelApp(int light_sensor_pin,
 
 void LightLevelApp::on_setup()
 {
-  Serial.begin(115200);
+  enable_serial_tracing(115200);
 
   inf_printf("Starting Light Monitor...\n");
 

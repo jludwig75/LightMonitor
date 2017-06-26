@@ -4,6 +4,12 @@
 #include <Arduino.h>
 
 
+void enable_serial_tracing(long speed)
+{
+  Serial.begin(speed);
+}
+
+
 void inf_printf(const char *format, ...)
 {
   va_list arg;
