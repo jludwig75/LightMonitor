@@ -17,11 +17,13 @@ class LightLevelLog
 
     LightLevelLog(const String & log_file_name);
 
+    void on_setup();
+
     void log_light_level(uint32_t time, int16_t light_level);
     bool get_light_level_history(LightLevel *light_levels, unsigned output_entry_count, unsigned start_entry, unsigned & entries_retrieved) const;
 
   private:
-    const String _log_file_name;
+    String _log_file_name;
 };
 
 

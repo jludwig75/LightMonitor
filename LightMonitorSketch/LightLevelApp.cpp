@@ -4,7 +4,7 @@
 
 
 LightLevelApp::LightLevelApp(int light_sensor_pin,
-                             const char * light_level_log_file_name,
+                             const String & light_level_log_file_name,
                              unsigned long light_level_update_interval_ms,
                              unsigned long time_manager_update_interval_ms,
                              unsigned web_server_port,
@@ -31,6 +31,9 @@ void LightLevelApp::on_setup()
 
   inf_printf("Starting time manager...\n");
   _time_manager.on_setup();
+
+  inf_printf("Starting light level log...\n");
+  _light_log.on_setup();
 
   // Start the web server
   inf_printf("Starting web server...\n");

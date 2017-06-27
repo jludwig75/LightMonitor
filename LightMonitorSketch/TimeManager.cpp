@@ -26,7 +26,7 @@ void TimeManager::on_setup()
 void TimeManager::on_loop()
 {
   unsigned long current_time = millis();
-  if (current_time - _last_time_update_ms >= _update_interval_ms)
+  if (_last_time_update_ms == 0 || current_time - _last_time_update_ms >= _update_interval_ms)
   {
     _last_time_update_ms = current_time;
 

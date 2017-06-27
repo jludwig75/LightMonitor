@@ -20,7 +20,7 @@ LightLevelMonitor::LightLevelMonitor(const LightLevelSensor & light_sensor, Ligh
 void LightLevelMonitor::on_loop()
 {
   unsigned long current_time = millis();
-  if (current_time - _last_update_time_ms >= _update_internal_ms)
+  if (_last_update_time_ms == 0 || current_time - _last_update_time_ms >= _update_internal_ms)
   {
     _last_update_time_ms = current_time;
 

@@ -9,11 +9,18 @@ LightLevelLog::LightLevelLog(const String & log_file_name) :
 {
 }
 
+void LightLevelLog::on_setup()
+{
+  SPIFFS.begin();
+}
+
+
 void LightLevelLog::log_light_level(uint32_t time, int16_t light_level)
 {
   File log_file = SPIFFS.open(_log_file_name, "a");
   if (!log_file)
   {
+    err_printf("Failed to open log file \"%s\" for append\n", _log_file_name.c_str());
     return;
   }
 
@@ -45,7 +52,7 @@ bool LightLevelLog::get_light_level_history(LightLevel *light_levels, unsigned o
   File log_file = SPIFFS.open(_log_file_name, "r");
   if (!log_file)
   {
-    err_printf("Failed to open log file %s\n", _log_file_name.c_str());
+    err_printf("Failed to open log file \"%s\" for read\n", _log_file_name.c_str());
     return false;
   }
 
