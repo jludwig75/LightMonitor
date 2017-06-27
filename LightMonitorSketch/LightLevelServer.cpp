@@ -34,14 +34,14 @@ void LightLevelServer::handle_root() {
   inf_printf("Web server handling path \"/\"\n");
   String output = "Hello from the esp8266 web server.";
   send(200, "text/plain", output);
-  inf_printf("Web server handled path \"/\":\n%s", output.c_str());
+  inf_printf("Web server handled path \"/\":\n%s\n", output.c_str());
 }
 
 void LightLevelServer::handle_light_level() {
   inf_printf("Web server handling path \"/light_level\"\n");
   String output = String("Light level = ") + String(_light_level_sensor.get_current_light_level());
   send(200, "text/plain", output);
-  inf_printf("Web server handled path \"/light_level\":\n%s", output.c_str());
+  inf_printf("Web server handled path \"/light_level\":\n%s\n", output.c_str());
 }
 
 void LightLevelServer::handle_light_level_history()
@@ -70,7 +70,7 @@ void LightLevelServer::handle_light_level_history()
   else
   {
     send(200, "text/plain", output);
-    inf_printf("Web server handled path \"/light_history\":\n%s", output.c_str());
+    inf_printf("Web server handled path \"/light_history\":\n%s\n", output.c_str());
   }
 }
 
