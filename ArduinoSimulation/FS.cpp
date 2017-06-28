@@ -68,8 +68,20 @@ void File::close()
 }
 
 
+FS::FS() : _started(false) {
+
+}
+
+void FS::begin() {
+    _started = true;
+}
+
 File FS::open(const String & file_name, const char * mode)
 {
+    if (!_started) {
+        return File(NULL, "");
+    }
+
     FILE *fp;
     String win_mode(mode);
     if (win_mode.find('t') == std::string::npos && win_mode.find('b') == std::string::npos)
@@ -87,5 +99,9 @@ File FS::open(const String & file_name, const char * mode)
 
 bool FS::exists(const String & path) const
 {
+    if (!_started) {
+        return false;
+    }
+
     return false;
 }

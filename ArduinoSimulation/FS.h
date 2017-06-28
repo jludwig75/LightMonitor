@@ -34,8 +34,12 @@ private:
 class FS
 {
 public:
+    FS();
+    void begin();
     File open(const String & file_name, const char * mode);
     bool exists(const String & path) const;
+private:
+    bool _started;
 };
 
 
