@@ -14,7 +14,7 @@ LightLevelApp::LightLevelApp(int light_sensor_pin,
   _light_sensor(light_sensor_pin),
   _light_log(light_level_log_file_name),
   _light_monitor(_light_sensor, _light_log, _time_manager, light_level_update_interval_ms),
-  _light_server(web_server_port, _light_sensor, _light_log, "/web_templates"),
+  _light_server(web_server_port, _light_sensor, _light_log, _time_manager, "/web_templates"),
   _wifi_ssid(wifi_ssid),
   _wifi_password(wifi_password)
 {

@@ -147,11 +147,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\ArduinoSimulation\Arduino.cpp" />
+    <ClCompile Include="..\ArduinoSimulation\DateStrings.cpp" />
     <ClCompile Include="..\ArduinoSimulation\ESP8266WebServer.cpp" />
     <ClCompile Include="..\ArduinoSimulation\FS.cpp" />
     <ClCompile Include="..\ArduinoSimulation\libb64\cdecode.c" />
     <ClCompile Include="..\ArduinoSimulation\libb64\cencode.cpp" />
     <ClCompile Include="..\ArduinoSimulation\TimeLib.cpp" />
+    <ClCompile Include="..\ArduinoSimulation\Timezone.cpp" />
     <ClCompile Include="..\LightMonitorSketch\LightLevelApp.cpp" />
     <ClCompile Include="..\LightMonitorSketch\LightLevelLog.cpp" />
     <ClCompile Include="..\LightMonitorSketch\LightLevelMonitor.cpp" />
