@@ -41,8 +41,10 @@
 
 webserver::request_func webserver::request_func_=0;
 
-unsigned webserver::Request(Socket* s) {
-  std::string line = s->ReceiveLine();
+unsigned webserver::Request(void* ptr_s) {
+  Socket s = *(reinterpret_cast<Socket*>(ptr_s));
+  
+  std::string line = s.ReceiveLine();
   if (line.empty()) {
     return 1;
   }
@@ -70,7 +72,7 @@ unsigned webserver::Request(Socket* s) {
   SplitGetReq(line.substr(posStartPath), path, params);
 
   req.status_ = "202 OK";
-  req.s_      = s;
+  req.s_      = &s;
   req.path_   = path;
   req.params_ = params;
 
@@ -84,7 +86,7 @@ unsigned webserver::Request(Socket* s) {
   int contentLength = 0;
 
   while(1) {
-    line=s->ReceiveLine();
+    line=s.ReceiveLine();
 
     if (line.empty()) break;
 
@@ -124,9 +126,9 @@ unsigned webserver::Request(Socket* s) {
   if (req.method_ == "POST" && contentLength > 0)
   {
 	  line = "";
-	  while (line.length() < (size_t)contentLength)
+	  while (line.length() < contentLength)
 	  {
-		  line += s->ReceiveBytes();
+		  line += s.ReceiveBytes();
 	  }
 	  printf("Content body: \"%s\"\n", line.c_str());
 	  line = req.method_ + " " + req.path_ + "?" + line;
@@ -148,37 +150,36 @@ unsigned webserver::Request(Socket* s) {
   char* asctime_remove_nl = asctime(gmt);
   asctime_remove_nl[24] = 0;
 
-  s->SendBytes("HTTP/1.1 ");
+  s.SendBytes("HTTP/1.1 ");
 
   if (! req.auth_realm_.empty() ) {
-    s->SendLine("401 Unauthorized");
-    s->SendBytes("WWW-Authenticate: Basic Realm=\"");
-    s->SendBytes(req.auth_realm_);
-    s->SendLine("\"");
+    s.SendLine("401 Unauthorized");
+    s.SendBytes("WWW-Authenticate: Basic Realm=\"");
+    s.SendBytes(req.auth_realm_);
+    s.SendLine("\"");
   }
   else {
-    s->SendLine(req.status_);
+    s.SendLine(req.status_);
   }
-  s->SendLine(std::string("Date: ") + asctime_remove_nl + " GMT");
-  s->SendLine(std::string("Server: ") +serverName);
-  s->SendLine("Connection: close");
-  s->SendLine("Content-Type: text/html; charset=ISO-8859-1");
-  s->SendLine("Content-Length: " + str_str.str());
+  s.SendLine(std::string("Date: ") + asctime_remove_nl + " GMT");
+  s.SendLine(std::string("Server: ") +serverName);
+  s.SendLine("Connection: close");
+  s.SendLine("Content-Type: text/html; charset=ISO-8859-1");
+  s.SendLine("Content-Length: " + str_str.str());
   if (!req.responseHeaders_.empty())
   {
-	  s->SendBytes(req.responseHeaders_.c_str());
+	  s.SendBytes(req.responseHeaders_.c_str());
   }
-  s->SendLine("");
-  s->SendLine(req.answer_);
+  s.SendLine("");
+  s.SendLine(req.answer_);
 
-  s->Close();
-
-  delete s;
+  s.Close();
+  
 
   return 0;
 }
 
-webserver::webserver(unsigned int port_to_listen, request_func r) : _in(port_to_listen, 5, NonBlockingSocket) {
+webserver::webserver(unsigned int port_to_listen, request_func r) : _in(port_to_listen, 5) {
   request_func_ = r;
 }
 
@@ -187,9 +188,9 @@ void webserver::handle_client() {
     // TODO: This is naive, because we want handle_client to handle one request not an entire client session, but it will work for now.
 
     Socket* ptr_s = _in.Accept();
-    if (ptr_s)
-    {
-        Request(ptr_s);
-    }
+
+    unsigned ret;
+    HANDLE h = (HANDLE)_beginthreadex(0, 0, Request, (void*)ptr_s, 0, &ret);
+    WaitForSingleObject(h, INFINITE);
 }
 
