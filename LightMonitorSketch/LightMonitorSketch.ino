@@ -1,7 +1,7 @@
 #include "LightLevelApp.h"
 
 
-#define LIGHT_SENSOR_PIN                4
+#define LIGHT_SENSOR_PIN                A0
 #define WEB_SERVER_PORT                 80
 #define LIGHT_LEVEL_UPDATE_INTERVAL_MS  (5 * 60 * 1000)   // 5 Minutes
 #define TIME_MANAGER_UPDATE_INTERVAL_MS (60 * 60 * 1000)  // 1 hour
