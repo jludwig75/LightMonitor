@@ -1,7 +1,8 @@
 #include "LightLevelLog.h"
 
 #include "tracing.h"
-#include <FS.h>
+#include <SPI.h>
+#include <SD.h>
 
 
 LightLevelLog::LightLevelLog(const String & log_file_name) :
@@ -11,19 +12,25 @@ LightLevelLog::LightLevelLog(const String & log_file_name) :
 
 void LightLevelLog::on_setup()
 {
-  SPIFFS.begin();
+ if (!SD.begin(D8)) {
+    err_printf("Card failed, or not present\n");
+    // don't do anything more:
+    return;
+  }
+  inf_printf("card initialized.\n");
 }
 
 
 void LightLevelLog::log_light_level(uint32_t time, int16_t light_level)
 {
-  File log_file = SPIFFS.open(_log_file_name, "a");
+  File log_file = SD.open(_log_file_name, FILE_WRITE);
+
   if (!log_file)
   {
-    err_printf("Failed to open log file \"%s\" for append\n", _log_file_name.c_str());
+    err_printf("error opening log file %s for write.\n", _log_file_name.c_str());
     return;
   }
-
+  
   LightLevelLog::LightLevel light_level_entry;
   light_level_entry.time = time;
   light_level_entry.light_level = light_level;
@@ -49,7 +56,7 @@ bool LightLevelLog::get_light_level_history(LightLevel *light_levels, unsigned o
     return false;
   }
 
-  File log_file = SPIFFS.open(_log_file_name, "r");
+  File log_file = SD.open(_log_file_name, FILE_READ);
   if (!log_file)
   {
     err_printf("Failed to open log file \"%s\" for read\n", _log_file_name.c_str());
@@ -70,7 +77,7 @@ bool LightLevelLog::get_light_level_history(LightLevel *light_levels, unsigned o
 
   if (start_entry > 0)
   {
-      if (!log_file.seek(start_entry * sizeof(LightLevelLog::LightLevel), SeekSet))
+      if (!log_file.seek(start_entry * sizeof(LightLevelLog::LightLevel)))
       {
           return false;
       }
@@ -83,7 +90,7 @@ bool LightLevelLog::get_light_level_history(LightLevel *light_levels, unsigned o
   }
 
   unsigned bytes_to_read = entries_to_read * sizeof(LightLevelLog::LightLevel);
-  unsigned bytes_read = log_file.readBytes((char *)light_levels, bytes_to_read);
+  unsigned bytes_read = log_file.read((char *)light_levels, bytes_to_read);
   log_file.close();
   if (bytes_read != bytes_to_read)
   {
