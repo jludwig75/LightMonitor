@@ -152,6 +152,7 @@
     <ClCompile Include="..\ArduinoSimulation\FS.cpp" />
     <ClCompile Include="..\ArduinoSimulation\libb64\cdecode.c" />
     <ClCompile Include="..\ArduinoSimulation\libb64\cencode.cpp" />
+    <ClCompile Include="..\ArduinoSimulation\SD.cpp" />
     <ClCompile Include="..\ArduinoSimulation\TimeLib.cpp" />
     <ClCompile Include="..\ArduinoSimulation\Timezone.cpp" />
     <ClCompile Include="..\LightMonitorSketch\LightLevelApp.cpp" />

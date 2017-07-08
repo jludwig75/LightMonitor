@@ -54,9 +54,6 @@
     <ClCompile Include="..\LightMonitorSketch\LightLevelLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\ArduinoSimulation\FS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\ArduinoSimulation\libb64\cdecode.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -70,6 +67,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\ArduinoSimulation\DateStrings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ArduinoSimulation\SD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ArduinoSimulation\FS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

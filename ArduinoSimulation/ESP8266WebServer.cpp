@@ -365,7 +365,7 @@ void ESP8266WebServer::send(int code, const String& content_type, const String& 
 
 void ESP8266WebServer::sendContent(const String& content) {
     assert(_currentRequest);
-    _currentRequest->answer_ = content.c_str();
+    _currentRequest->answer_ += content.c_str();
 }
 
 void ESP8266WebServer::sendContent_P(PGM_P content) {

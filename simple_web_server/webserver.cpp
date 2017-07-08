@@ -179,7 +179,7 @@ unsigned webserver::Request(void* ptr_s) {
   return 0;
 }
 
-webserver::webserver(unsigned int port_to_listen, request_func r) : _in(port_to_listen, 5) {
+webserver::webserver(unsigned int port_to_listen, request_func r) : _in(port_to_listen, 5, NonBlockingSocket) {
   request_func_ = r;
 }
 
@@ -189,8 +189,11 @@ void webserver::handle_client() {
 
     Socket* ptr_s = _in.Accept();
 
-    unsigned ret;
-    HANDLE h = (HANDLE)_beginthreadex(0, 0, Request, (void*)ptr_s, 0, &ret);
-    WaitForSingleObject(h, INFINITE);
+	if (ptr_s)
+	{
+		unsigned ret;
+		HANDLE h = (HANDLE)_beginthreadex(0, 0, Request, (void*)ptr_s, 0, &ret);
+		WaitForSingleObject(h, INFINITE);
+	}
 }
 

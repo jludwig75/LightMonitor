@@ -28,3 +28,6 @@ typedef void *PGM_VOID_P;
 
 #define memcpy_P(a, b, l)       memcpy(a, b, l)
 #define memccpy_P(a, b, c, l)   memccpy(a, b, c, l)
+
+#define	A0	0
+#define	D8	8
