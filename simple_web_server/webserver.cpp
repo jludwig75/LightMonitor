@@ -126,7 +126,7 @@ unsigned webserver::Request(void* ptr_s) {
   if (req.method_ == "POST" && contentLength > 0)
   {
 	  line = "";
-	  while (line.length() < contentLength)
+	  while (line.length() < (size_t)contentLength)
 	  {
 		  line += s.ReceiveBytes();
 	  }
