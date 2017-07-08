@@ -6,7 +6,7 @@
 #include "LightLevelLog.h"
 
 
-#define LIGHT_LEVEL_HISTORY_BUFFER_SIZE (1*1024)
+#define LIGHT_LEVEL_HISTORY_BUFFER_SIZE (4 * 1024)
 #define LIGHT_LEVEL_HISTORY_ENTRIES     (LIGHT_LEVEL_HISTORY_BUFFER_SIZE / sizeof(LightLevelLog::LightLevel))
 
 class LightLevelSensor;

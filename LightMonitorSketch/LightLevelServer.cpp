@@ -96,18 +96,28 @@ void LightLevelServer::handle_light_level() {
 void LightLevelServer::handle_light_level_history()
 {
   inf_printf("Web server handling path \"/light_history\"\n");
-  String output = "time,light level\n";
+  
+  setContentLength(CONTENT_LENGTH_UNKNOWN);
+  send(200, "text/plain", "time,light level\n");
+  
   unsigned entries_retrieved;
   unsigned start_entry = 0;
+  unsigned long entries_sent = 0;
+  unsigned long chunks_sent = 0;
   bool ret = true;
   while((ret = _light_log.get_light_level_history(_light_level_buffer, LIGHT_LEVEL_HISTORY_ENTRIES, start_entry, entries_retrieved)) && entries_retrieved > 0)
   {
+    String output;
     for(unsigned i = 0; i < entries_retrieved; i++)
     {
       output += String("") + to_local_time_string(_light_level_buffer[i].time) + "," + String(_light_level_buffer[i].light_level) + "\n";
+      entries_sent++;
     }
 
+    inf_printf("Sending chunk %lu: %u entries, %u bytes\n", chunks_sent, entries_retrieved, output.length());
+    sendContent(output);
     start_entry += entries_retrieved;
+    chunks_sent++;
   }
 
   if (!ret)
@@ -118,8 +128,7 @@ void LightLevelServer::handle_light_level_history()
   }
   else
   {
-    send(200, "text/plain", output);
-    inf_printf("Web server handled path \"/light_history\":\n%s\n", output.c_str());
+    inf_printf("Web server handled path \"/light_history\": Sent %lu entries\n", entries_sent);
   }
 }
 
