@@ -7,7 +7,7 @@
 #define TIME_MANAGER_UPDATE_INTERVAL_MS (60 * 60 * 1000)  // 1 hour
 #define WIFI_SSID                       "My SSID"
 #define WIFI_PASSWORD                   "XXXXXXXXXXXXX"
-#define LIGHT_LEVEL_LOG_FILE_NAME       "/light_levels.log"
+#define LIGHT_LEVEL_LOG_FILE_NAME       "LIGHTLVL.LOG"
 
 
 LightLevelApp app(LIGHT_SENSOR_PIN,
