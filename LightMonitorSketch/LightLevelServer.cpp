@@ -87,9 +87,9 @@ void LightLevelServer::handle_light_level() {
     time_t t = _time_manager.get_time();
     String t_s = to_local_time_string(t);
   inf_printf("Web server handling path \"/light_level\"\n");
-  String output = String("Light level = ") + String(_light_level_sensor.get_current_light_level()) + "<br/>";
-  output += String("Time =") + t_s;
-  send(200, "text/plain", output);
+  String output = String("<html><head></head><body>Light level = ") + String(_light_level_sensor.get_current_light_level()) + "<br/>";
+  output += String("Time =") + t_s + String("</body></html>");
+  send(200, "text/html", output);
   inf_printf("Web server handled path \"/light_level\":\n%s\n", output.c_str());
 }
 
