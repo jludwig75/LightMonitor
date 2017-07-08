@@ -106,6 +106,6 @@ bool LightLevelLog::get_light_level_history(LightLevel *light_levels, unsigned o
   }
   
   entries_retrieved = entries_to_read;
-  //inf_printf("Successfully read %u entries from log file starting at entry %u.\n", entries_to_read, start_entry);
+  inf_printf("Successfully read %u entries from log file starting at entry %u.\n", entries_to_read, start_entry);
   return true;
 }
