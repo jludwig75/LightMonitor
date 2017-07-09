@@ -9,10 +9,11 @@
 #include <TimeLib.h>
 
 
-LightLevelServer::LightLevelServer(int server_port, LightLevelSensor & light_level_sensor, LightLevelLog & light_log, const TimeManager & time_manager, const String & templates_base_dir) :
- OOWebServer<LightLevelServer>(templates_base_dir, server_port),
- _light_level_sensor(light_level_sensor),
- _light_log(light_log),
+LightLevelServer::LightLevelServer(int server_port, LightLevelSensor & light_level_sensor, LightLevelLog & light_log, LightLevelLog & light_history, const TimeManager & time_manager, const String & templates_base_dir) :
+  OOWebServer<LightLevelServer>(templates_base_dir, server_port),
+  _light_level_sensor(light_level_sensor),
+  _light_log(light_log),
+  _light_history(light_history),
   _tz(NULL),
   _time_manager(time_manager)
 {
@@ -77,10 +78,52 @@ void LightLevelServer::server_begin()
 }
 
 void LightLevelServer::handle_root() {
-  inf_printf("Web server handling path \"/\"\n");
-  String output = "Hello from the esp8266 web server.";
-  send(200, "text/plain", output);
-  inf_printf("Web server handled path \"/\":\n%s\n", output.c_str());
+	inf_printf("Web server handling path \"/\"\n");
+
+	setContentLength(CONTENT_LENGTH_UNKNOWN);
+	send(200, "text/html", "<html><head>\n\t<style>\n"
+	"	table, th, td{\n"
+	"		  border: 1px solid black;\n"
+	"\n"
+	"\n"
+	"\n"
+	"\n"
+	"}\n"
+	"\t</style>\n</head><body>\n<table>\n\t<tr><th>Time</th><th>Light Level</th></tr>\n");
+
+  unsigned entries_retrieved;
+  unsigned start_entry = 0;
+  unsigned long entries_sent = 0;
+  unsigned long chunks_sent = 0;
+  bool ret = true;
+  while ((ret = _light_history.get_light_level_history(_light_level_buffer, LIGHT_LEVEL_HISTORY_ENTRIES, start_entry, entries_retrieved)) && entries_retrieved > 0)
+  {
+	  String output;
+	  for (unsigned i = 0; i < entries_retrieved; i++)
+	  {
+		  output += String("\t<tr><td>") + to_local_time_string(_light_level_buffer[i].time) + "</td><td>" + String(_light_level_buffer[i].light_level) + "</td></tr>\n";
+		  entries_sent++;
+	  }
+
+	  inf_printf("Sending chunk %lu: %u entries, %u bytes\n", chunks_sent, entries_retrieved, output.length());
+	  sendContent(output);
+	  start_entry += entries_retrieved;
+	  chunks_sent++;
+  }
+
+  if (!ret)
+  {
+	  String output = "Web server encountered an error reading from the log file while handling path \"/light_history\".";
+	  err_printf("%s\n", output.c_str());
+	  send(500, "text/plain", output);
+  }
+  else
+  {
+	  sendContent("</table>\n</body></html>");
+	  inf_printf("Web server handled path \"/light_history\": Sent %lu entries\n", entries_sent);
+  }
+
+  inf_printf("Web server handled path \"/\": Sent %lu entries\n", entries_sent);
 }
 
 void LightLevelServer::handle_light_level() {

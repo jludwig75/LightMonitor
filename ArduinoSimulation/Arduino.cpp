@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <Windows.h>
 
-
 long millis()
 {
     return GetTickCount();
@@ -37,5 +36,9 @@ void HardwareSerial::println(size_t val)
 
 int analogRead(int pin)
 {
-    return 0;
+	static int last_value = 0;
+
+	last_value = (last_value + 7) % 1024;
+
+	return last_value;
 }

@@ -16,7 +16,7 @@ class TimeManager;
 class LightLevelServer : public OOWebServer<LightLevelServer>
 {
   public:
-    LightLevelServer(int server_port, LightLevelSensor & light_level_sensor, LightLevelLog & light_log, const TimeManager & time_manager, const String &templates_base_dir);
+    LightLevelServer(int server_port, LightLevelSensor & light_level_sensor, LightLevelLog & light_log, LightLevelLog & light_history, const TimeManager & time_manager, const String &templates_base_dir);
     ~LightLevelServer();
 
     void on_setup();
@@ -33,6 +33,7 @@ class LightLevelServer : public OOWebServer<LightLevelServer>
   
     const LightLevelSensor & _light_level_sensor;
     const LightLevelLog & _light_log;
+	const LightLevelLog & _light_history;
 
     LightLevelLog::LightLevel _light_level_buffer[LIGHT_LEVEL_HISTORY_ENTRIES];
     Timezone *_tz;

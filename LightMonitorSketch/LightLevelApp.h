@@ -15,6 +15,7 @@ class LightLevelApp
   public:
     LightLevelApp(int light_sensor_pin,
                   const String & light_level_log_file_name,
+                  const String & light_historty_log_file_name,
                   unsigned long light_level_update_interval_ms,
                   unsigned long time_manager_update_interval_ms,
                   unsigned web_server_port,
@@ -28,7 +29,8 @@ class LightLevelApp
     TimeManager _time_manager;
     LightLevelSensor _light_sensor;
     LightLevelLog _light_log;
-    LightLevelMonitor _light_monitor;
+	LightLevelLog _light_history;
+	LightLevelMonitor _light_monitor;
     LightLevelServer _light_server;
     String _wifi_ssid;
     String _wifi_password;

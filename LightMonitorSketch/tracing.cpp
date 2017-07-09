@@ -15,7 +15,7 @@ void inf_printf(const char *format, ...)
   va_list arg;
   va_start(arg, format);
 
-  char temp[32];
+  char temp[80];
   char* buffer = temp;
 
   size_t len = vsnprintf(temp, sizeof(temp), format, arg);

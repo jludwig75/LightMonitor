@@ -5,6 +5,7 @@
 
 LightLevelApp::LightLevelApp(int light_sensor_pin,
                              const String & light_level_log_file_name,
+			                 const String & light_historty_log_file_name,
                              unsigned long light_level_update_interval_ms,
                              unsigned long time_manager_update_interval_ms,
                              unsigned web_server_port,
@@ -13,8 +14,9 @@ LightLevelApp::LightLevelApp(int light_sensor_pin,
   _time_manager(time_manager_update_interval_ms),
   _light_sensor(light_sensor_pin),
   _light_log(light_level_log_file_name),
-  _light_monitor(_light_sensor, _light_log, _time_manager, light_level_update_interval_ms),
-  _light_server(web_server_port, _light_sensor, _light_log, _time_manager, "/web_templates"),
+  _light_history(light_historty_log_file_name),
+  _light_monitor(_light_sensor, _light_log, _light_history, _time_manager, light_level_update_interval_ms),
+  _light_server(web_server_port, _light_sensor, _light_log, _light_history, _time_manager, "/web_templates"),
   _wifi_ssid(wifi_ssid),
   _wifi_password(wifi_password)
 {
